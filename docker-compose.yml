@@ -1,0 +1,24 @@
+version: '3.9'
+
+# containers que serão gerados
+services:
+  user_registration: # primeiro container
+    container_name: user_registration
+    build: # explica onde estão os arquivos
+      context: .
+      # dockerfile: ./Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ./user_registration_app:/user_registration_app
+    env_file:
+      - ./dotenv_files/.env
+    depends_on:
+      - psql
+  psql: # segundo container
+    container_name: psql
+    image: postgres:13-alpine
+    volumes:
+      - ./data/postgres/data:/var/lib/postgresql/data/
+    env_file:
+      - ./dotenv_files/.env
